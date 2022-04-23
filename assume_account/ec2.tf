@@ -2,7 +2,7 @@ resource "aws_instance" "ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2_instance_type
 
-  subnet_id              = var.source_subnet_ids[0]
+  subnet_id              = var.subnet_ids[0]
   key_name               = aws_secretsmanager_secret.ec2.name
   vpc_security_group_ids = [aws_security_group.ec2.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2.name
