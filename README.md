@@ -2,13 +2,18 @@
 A simple cross account implementation by using IAM role.
 
 ## Description
-When we have multiple AWS accounts, we may want to access the resources in account A from account B. This can be simply done by using IAM role. Suppose we have a CloudWatch log group in account A, and we want to read from an EC2 instance in account B. We need the following resources to be prepared:
-- Create RoleB in account B. Attach the AssumeRole permission, and other required permissions depends on the user. Use this role to create an EC2 instance. Take the ARN of RoleB.
-- Create RoleA in account A. Enable RoleB to assume RoleA. Also, remember to attach the expect permissions to read CloudWatch logs.
-- After the deployment for both accounts finish, log into the EC2 instance in account B. The current role is RoleB.
+When we have multiple AWS accounts, we may want to access the resources in account A from account B. 
+This can be simply done by using IAM role. 
+Suppose we have a CloudWatch log group in source account A, and we want to read it from an EC2 instance in assume account B. 
+We need the following resources to be prepared:
+- Create RoleB in assume account B. Attach the custom permissions, and the assume role permission. 
+  Then, use this role to create an EC2 instance. Take the ARN of RoleB.
+- Create RoleA in source account A. Enable RoleB to assume RoleA. Also, remember to attach the correct permissions 
+  to read CloudWatch logs.
+- After the deployment for both accounts finish, log into the EC2 instance in assume account B. The current role is RoleB.
 - Assume RoleA by
   ```
-  aws sts assume-role --role-arn "arn:aws:iam::{account_A_id}:role/{role_name}" --role-session-name "test_session"
+  aws sts assume-role --role-arn "arn:aws:iam::{account_A_id}:role/{source_role_name}" --role-session-name "test_session"
   ```
   It will give the output like:
   ```
